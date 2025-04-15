@@ -7,25 +7,30 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: auto;
 }
 
 .container {
   display: flex;
   gap: 20px;
+  padding: 10px;
 }
 
 .config-panel {
-  width: 200px;
+  width: 220px;
   background-color: #111;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 0 10px #444;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 40px);
-  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: repeat(15, 30px);
+  grid-template-rows: repeat(15, 30px);
   gap: 4px;
   border: 2px solid #333;
   padding: 5px;
@@ -33,17 +38,17 @@ body {
 }
 
 .pixel {
-  width: 40px;
-  height: 40px;
-  background-color: #222;
+  width: 30px;
+  height: 30px;
+  background: #222;
   border: 1px solid #333;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .pixel.active {
-  box-shadow: 0 0 12px #fff;
+  box-shadow: 0 0 10px #fff;
 }
 
 .quick-colors {
@@ -61,11 +66,11 @@ body {
   cursor: pointer;
 }
 
-.clear-btn {
+.clear-btn, .gradient-btn {
   margin-top: 10px;
   width: 100%;
   padding: 6px;
-  background-color: #900;
+  background-color: #333;
   color: #fff;
   border: none;
   border-radius: 4px;

@@ -3,13 +3,14 @@ const colorPicker = document.getElementById('colorPicker');
 const pixelLabel = document.getElementById('pixelLabel');
 const quickColors = document.getElementById('quickColors');
 const clearBtn = document.getElementById('clearBoard');
+const gradientPicker = document.getElementById('gradientPicker');
 
 let currentPixels = [];
 let pixelStates = {};
 let recentColors = [];
 
-const cols = 'ABCDEFGHIJ'.split('');
-const rows = [...Array(10).keys()].map(i => i + 1);
+const cols = [...'ABCDEFGHIJKLMNO'];
+const rows = [...Array(15).keys()].map(i => i + 1);
 
 function addQuickColor(color) {
   if (!recentColors.includes(color)) {
@@ -24,16 +25,20 @@ function renderQuickColors() {
   recentColors.forEach(color => {
     const btn = document.createElement('button');
     btn.className = 'color-swatch';
-    btn.style.backgroundColor = color;
+    btn.style.background = color.includes(',') ? `linear-gradient(${color})` : color;
     btn.addEventListener('click', () => {
-      currentPixels.forEach(pixel => {
-        pixel.style.backgroundColor = color;
-        pixelStates[pixel.dataset.id] = color;
-      });
-      addQuickColor(color);
+      applyColorToSelection(color);
     });
     quickColors.appendChild(btn);
   });
+}
+
+function applyColorToSelection(color) {
+  currentPixels.forEach(pixel => {
+    pixel.style.background = color.includes(',') ? `linear-gradient(${color})` : color;
+    pixelStates[pixel.dataset.id] = color;
+  });
+  addQuickColor(color);
 }
 
 cols.forEach((col, x) => {
@@ -42,17 +47,21 @@ cols.forEach((col, x) => {
     const div = document.createElement('div');
     div.classList.add('pixel');
     div.dataset.id = id;
-    div.style.backgroundColor = '#111';
+    div.style.background = '#222';
 
     div.addEventListener('click', (e) => {
       if (!e.shiftKey) {
         currentPixels.forEach(p => p.classList.remove('active'));
         currentPixels = [];
       }
-      currentPixels.push(div);
-      div.classList.add('active');
+      if (!currentPixels.includes(div)) {
+        currentPixels.push(div);
+        div.classList.add('active');
+      }
       pixelLabel.textContent = 'Selected: ' + currentPixels.map(p => p.dataset.id).join(', ');
-      if (pixelStates[id]) colorPicker.value = pixelStates[id];
+      if (pixelStates[id] && !pixelStates[id].includes(',')) {
+        colorPicker.value = pixelStates[id];
+      }
     });
 
     grid.appendChild(div);
@@ -61,17 +70,20 @@ cols.forEach((col, x) => {
 
 colorPicker.addEventListener('input', () => {
   const color = colorPicker.value;
-  currentPixels.forEach(pixel => {
-    pixel.style.backgroundColor = color;
-    pixelStates[pixel.dataset.id] = color;
-  });
-  addQuickColor(color);
+  applyColorToSelection(color);
+});
+
+gradientPicker.addEventListener('click', () => {
+  const gradient = prompt("Enter gradient (e.g., red, blue or 45deg, red, blue):");
+  if (gradient) {
+    applyColorToSelection(gradient);
+  }
 });
 
 clearBtn.addEventListener('click', () => {
   const pixels = document.querySelectorAll('.pixel');
   pixels.forEach(pixel => {
-    pixel.style.backgroundColor = '#222';
+    pixel.style.background = '#222';
     pixel.classList.remove('active');
     pixelStates[pixel.dataset.id] = '#222';
   });

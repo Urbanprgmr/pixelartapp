@@ -1,4 +1,3 @@
-// Placeholder JavaScript to initialize 15x15 grid with dynamic grid size support
 const grid = document.getElementById('pixelGrid');
 const gridSizeSelect = document.getElementById('gridSize');
 const colorPicker = document.getElementById('colorPicker');
@@ -23,12 +22,19 @@ function buildGrid(size) {
       div.classList.add('pixel');
       div.dataset.id = id;
       div.style.background = '#222';
-      div.addEventListener('click', () => {
-        currentPixels.forEach(p => p.classList.remove('active'));
-        currentPixels = [div];
-        div.classList.add('active');
-        pixelLabel.textContent = 'Selected: ' + id;
+
+      div.addEventListener('click', (e) => {
+        if (!e.shiftKey) {
+          currentPixels.forEach(p => p.classList.remove('active'));
+          currentPixels = [];
+        }
+        if (!currentPixels.includes(div)) {
+          currentPixels.push(div);
+          div.classList.add('active');
+        }
+        pixelLabel.textContent = 'Selected: ' + currentPixels.map(p => p.dataset.id).join(', ');
       });
+
       grid.appendChild(div);
     });
   });

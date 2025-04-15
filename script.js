@@ -79,9 +79,10 @@ addColorInputBtn.addEventListener('click', () => {
 });
 
 function updateGradientPreview() {
+  const direction = document.getElementById('gradientDirection').value;
   const colors = Array.from(gradientInputs.querySelectorAll('input')).map(input => input.value);
   if (colors.length > 1) {
-    const gradient = `linear-gradient(to right, ${colors.join(',')})`;
+    const gradient = `linear-gradient(${direction}, ${colors.join(',')})`;
     gradientPreview.style.background = gradient;
     gradientPreview.dataset.gradient = gradient;
   }

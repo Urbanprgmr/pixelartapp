@@ -2,11 +2,13 @@ const grid = document.getElementById('pixelGrid');
 const gridSizeSelect = document.getElementById('gridSize');
 const colorPicker = document.getElementById('colorPicker');
 const clearBtn = document.getElementById('clearBoard');
-const gradientBtn = document.getElementById('gradientPicker');
-const addToPaletteBtn = document.getElementById('addToPalette');
-const quickColors = document.getElementById('quickColors');
-const savedPalettes = document.getElementById('savedPalettes');
 const pixelLabel = document.getElementById('pixelLabel');
+const savedPalettes = document.getElementById('savedPalettes');
+const gradientInputs = document.getElementById('gradientInputs');
+const addColorInputBtn = document.getElementById('addColorInput');
+const applyGradientBtn = document.getElementById('applyGradient');
+const gradientPreview = document.getElementById('gradientPreview');
+const saveGradientBtn = document.getElementById('saveGradient');
 
 let pixelStates = {};
 let currentPixels = [];
@@ -52,46 +54,6 @@ colorPicker.addEventListener('input', () => {
   });
 });
 
-gradientBtn.addEventListener('click', () => {
-  const gradient = prompt("Enter gradient (e.g., red, yellow or 45deg, red, yellow)");
-  if (gradient) {
-    const style = `linear-gradient(${gradient})`;
-    currentPixels.forEach(pixel => {
-      pixel.style.background = style;
-      pixelStates[pixel.dataset.id] = style;
-    });
-    addToPalette(gradient);
-  }
-});
-
-function addToPalette(color) {
-  if (!palette.includes(color)) {
-    palette.push(color);
-    renderPalette();
-  }
-}
-
-addToPaletteBtn.addEventListener('click', () => {
-  const color = colorPicker.value;
-  addToPalette(color);
-});
-
-function renderPalette() {
-  savedPalettes.innerHTML = '';
-  palette.forEach(color => {
-    const swatch = document.createElement('button');
-    swatch.className = 'color-swatch';
-    swatch.style.background = color.includes('gradient') ? color : color;
-    swatch.addEventListener('click', () => {
-      currentPixels.forEach(pixel => {
-        pixel.style.background = color.includes('gradient') ? color : color;
-        pixelStates[pixel.dataset.id] = color;
-      });
-    });
-    savedPalettes.appendChild(swatch);
-  });
-}
-
 clearBtn.addEventListener('click', () => {
   const pixels = document.querySelectorAll('.pixel');
   pixels.forEach(pixel => {
@@ -106,5 +68,55 @@ clearBtn.addEventListener('click', () => {
 gridSizeSelect.addEventListener('change', () => {
   buildGrid(parseInt(gridSizeSelect.value));
 });
+
+// Gradient tool
+addColorInputBtn.addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'color';
+  gradientInputs.appendChild(input);
+  updateGradientPreview();
+  input.addEventListener('input', updateGradientPreview);
+});
+
+function updateGradientPreview() {
+  const colors = Array.from(gradientInputs.querySelectorAll('input')).map(input => input.value);
+  if (colors.length > 1) {
+    const gradient = `linear-gradient(to right, ${colors.join(',')})`;
+    gradientPreview.style.background = gradient;
+    gradientPreview.dataset.gradient = gradient;
+  }
+}
+
+applyGradientBtn.addEventListener('click', () => {
+  const style = gradientPreview.dataset.gradient;
+  if (!style) return;
+  currentPixels.forEach(pixel => {
+    pixel.style.background = style;
+    pixelStates[pixel.dataset.id] = style;
+  });
+});
+
+saveGradientBtn.addEventListener('click', () => {
+  const style = gradientPreview.dataset.gradient;
+  if (!style || palette.includes(style)) return;
+  palette.push(style);
+  renderPalette();
+});
+
+function renderPalette() {
+  savedPalettes.innerHTML = '';
+  palette.forEach(color => {
+    const swatch = document.createElement('button');
+    swatch.className = 'color-swatch';
+    swatch.style.background = color;
+    swatch.addEventListener('click', () => {
+      currentPixels.forEach(pixel => {
+        pixel.style.background = color;
+        pixelStates[pixel.dataset.id] = color;
+      });
+    });
+    savedPalettes.appendChild(swatch);
+  });
+}
 
 buildGrid(15);

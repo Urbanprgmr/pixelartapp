@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixel Art Creator Pro</title>
+  <title>Pixel Art Creator - Gradient Edition</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -17,13 +17,6 @@
         <option value="30">30x30</option>
       </select>
     </label>
-    <button id="saveBtn" title="(Coming Soon)">Save</button>
-    <button id="loadBtn" title="(Coming Soon)">Load</button>
-    <button id="exportBtn" title="(Coming Soon)">Export</button>
-    <button id="undoBtn" title="(Coming Soon)">Undo</button>
-    <button id="redoBtn" title="(Coming Soon)">Redo</button>
-    <button id="fillBtn" title="(Coming Soon)">Fill</button>
-    <button id="mirrorBtn" title="(Coming Soon)">Mirror</button>
     <button id="clearBoard">Clear</button>
   </div>
   <div class="container">
@@ -31,13 +24,16 @@
       <h2>Pixel Config</h2>
       <p id="pixelLabel">Select a pixel</p>
       <input type="color" id="colorPicker" value="#ffffff"/>
-      <button id="gradientPicker">Apply Gradient</button>
-      <button id="addToPalette">Add to Palette</button>
-      <div class="quick-colors" id="quickColors"></div>
-      <div class="palette-manager">
-        <h4>Saved Palette</h4>
-        <div id="savedPalettes"></div>
+      <div class="gradient-panel">
+        <h4>Create Gradient</h4>
+        <div id="gradientInputs"></div>
+        <button id="addColorInput">+ Add Color</button>
+        <button id="applyGradient">Apply Gradient</button>
+        <div id="gradientPreview"></div>
+        <button id="saveGradient">Save to Palette</button>
       </div>
+      <h4>Saved Palette</h4>
+      <div id="savedPalettes" class="quick-colors"></div>
     </div>
     <div class="grid" id="pixelGrid"></div>
   </div>

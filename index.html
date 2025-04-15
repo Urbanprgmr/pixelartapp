@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manual Pixel Art Creator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="config-panel" id="configPanel">
+      <h2>Pixel Config</h2>
+      <p id="pixelLabel">Select a pixel</p>
+      <input type="color" id="colorPicker" value="#ffffff"/>
+      <div id="quickColors" class="quick-colors"></div>
+      <button id="clearBoard" class="clear-btn">Clear Board</button>
+    </div>
+    <div class="grid" id="pixelGrid"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

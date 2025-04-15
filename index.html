@@ -17,24 +17,25 @@
         <option value="30">30x30</option>
       </select>
     </label>
-    <button id="saveBtn">Save</button>
-    <button id="loadBtn">Load</button>
-    <button id="exportBtn">Export</button>
-    <button id="undoBtn">Undo</button>
-    <button id="redoBtn">Redo</button>
-    <button id="fillBtn">Fill</button>
-    <button id="mirrorBtn">Mirror</button>
+    <button id="saveBtn" title="(Coming Soon)">Save</button>
+    <button id="loadBtn" title="(Coming Soon)">Load</button>
+    <button id="exportBtn" title="(Coming Soon)">Export</button>
+    <button id="undoBtn" title="(Coming Soon)">Undo</button>
+    <button id="redoBtn" title="(Coming Soon)">Redo</button>
+    <button id="fillBtn" title="(Coming Soon)">Fill</button>
+    <button id="mirrorBtn" title="(Coming Soon)">Mirror</button>
     <button id="clearBoard">Clear</button>
   </div>
   <div class="container">
-    <div class="config-panel" id="configPanel">
+    <div class="config-panel">
       <h2>Pixel Config</h2>
       <p id="pixelLabel">Select a pixel</p>
       <input type="color" id="colorPicker" value="#ffffff"/>
-      <button id="gradientPicker" class="gradient-btn">Gradient</button>
-      <div id="quickColors" class="quick-colors"></div>
-      <div id="paletteManager" class="palette-manager">
-        <h4>Palette</h4>
+      <button id="gradientPicker">Apply Gradient</button>
+      <button id="addToPalette">Add to Palette</button>
+      <div class="quick-colors" id="quickColors"></div>
+      <div class="palette-manager">
+        <h4>Saved Palette</h4>
         <div id="savedPalettes"></div>
       </div>
     </div>

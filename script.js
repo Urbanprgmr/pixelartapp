@@ -2,11 +2,15 @@ const grid = document.getElementById('pixelGrid');
 const gridSizeSelect = document.getElementById('gridSize');
 const colorPicker = document.getElementById('colorPicker');
 const clearBtn = document.getElementById('clearBoard');
-const pixelLabel = document.getElementById('pixelLabel');
+const gradientBtn = document.getElementById('gradientPicker');
+const addToPaletteBtn = document.getElementById('addToPalette');
 const quickColors = document.getElementById('quickColors');
+const savedPalettes = document.getElementById('savedPalettes');
+const pixelLabel = document.getElementById('pixelLabel');
 
 let pixelStates = {};
 let currentPixels = [];
+let palette = [];
 
 function buildGrid(size) {
   grid.innerHTML = '';
@@ -40,10 +44,6 @@ function buildGrid(size) {
   });
 }
 
-gridSizeSelect.addEventListener('change', () => {
-  buildGrid(parseInt(gridSizeSelect.value));
-});
-
 colorPicker.addEventListener('input', () => {
   const color = colorPicker.value;
   currentPixels.forEach(pixel => {
@@ -51,6 +51,46 @@ colorPicker.addEventListener('input', () => {
     pixelStates[pixel.dataset.id] = color;
   });
 });
+
+gradientBtn.addEventListener('click', () => {
+  const gradient = prompt("Enter gradient (e.g., red, yellow or 45deg, red, yellow)");
+  if (gradient) {
+    const style = `linear-gradient(${gradient})`;
+    currentPixels.forEach(pixel => {
+      pixel.style.background = style;
+      pixelStates[pixel.dataset.id] = style;
+    });
+    addToPalette(gradient);
+  }
+});
+
+function addToPalette(color) {
+  if (!palette.includes(color)) {
+    palette.push(color);
+    renderPalette();
+  }
+}
+
+addToPaletteBtn.addEventListener('click', () => {
+  const color = colorPicker.value;
+  addToPalette(color);
+});
+
+function renderPalette() {
+  savedPalettes.innerHTML = '';
+  palette.forEach(color => {
+    const swatch = document.createElement('button');
+    swatch.className = 'color-swatch';
+    swatch.style.background = color.includes('gradient') ? color : color;
+    swatch.addEventListener('click', () => {
+      currentPixels.forEach(pixel => {
+        pixel.style.background = color.includes('gradient') ? color : color;
+        pixelStates[pixel.dataset.id] = color;
+      });
+    });
+    savedPalettes.appendChild(swatch);
+  });
+}
 
 clearBtn.addEventListener('click', () => {
   const pixels = document.querySelectorAll('.pixel');
@@ -61,6 +101,10 @@ clearBtn.addEventListener('click', () => {
   });
   currentPixels = [];
   pixelLabel.textContent = 'Select a pixel';
+});
+
+gridSizeSelect.addEventListener('change', () => {
+  buildGrid(parseInt(gridSizeSelect.value));
 });
 
 buildGrid(15);
